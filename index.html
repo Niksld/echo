@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="utf-8">
+    <title>Echo</title>
+    <!-- <link rel="shortcut icon" href="img/favicon.svg" type="image/x-icon"> -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body onload="set_text()">
+    <p id="echo_block" style="width: 85%;">This text will be replaced if you submit something in the form</p>
+
+    <div id="test_it">
+        Try it yourself!
+        <form method="GET" id="form">
+            <input name="text" id="inpt" type="text" placeholder="Input text">
+            <input type="submit" value="Set text">
+        </form>
+    </div>
+
+    <script>
+        function escapeHTML(str) {
+            return str.replace(/&/g, "&amp;")
+                      .replace(/</g, "&lt;")
+                      .replace(/>/g, "&gt;")
+                      .replace(/"/g, "&quot;")
+                      .replace(/'/g, "&#39;");
+        }
+
+        function set_text() {
+            var p = document.getElementById("echo_block");
+            var urlParams = new URLSearchParams(window.location.search);
+            var text = urlParams.get("text");
+
+            if (text) {
+                text = escapeHTML(text);
+                text = text.replace(/\\n/g, "<br>");
+
+                p.innerHTML = text;
+
+                document.getElementById("test_it").remove();
+            }
+        }
+    </script>
+</body>
+</html>
